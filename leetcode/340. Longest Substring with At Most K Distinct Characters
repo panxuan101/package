@@ -1,0 +1,22 @@
+class Solution {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        int[] count =new int[256];
+        int res=0;
+        int j=0, number=0;
+        for(int i=0; i<s.length(); i++){
+            if(count[s.charAt(i)]++ == 0){              //先判断再++，不论结果是否为 true都会++
+                number++;
+            }
+            if(number > k){                             //最多k个distinct->需要判断长度大于k时候
+                while(--count[s.charAt(j++)] > 0);      //先--再判断再++
+                number--; 
+            }
+            
+            res=Math.max(res,i-j+1);
+        }
+        return res;
+    }
+}
+
+//sliding window
+//time:O(n)->sliding window , space:O(1)->256
