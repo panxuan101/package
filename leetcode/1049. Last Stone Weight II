@@ -1,0 +1,31 @@
+class Solution {
+    public int lastStoneWeightII(int[] stones) {
+        Set<Integer> sets = helper(0, stones.length - 1, stones);
+        int min = Integer.MAX_VALUE;
+        for (int num : sets) {
+            min = Math.min(min, num);
+        }
+        return min;
+    }
+
+    private Set<Integer> helper(int left, int right, int[] stones) {
+        Set<Integer> res = new HashSet<>();
+        if (left == right) {
+            res.add(stones[left]);
+            return res;
+        }
+        int mid = (left + right) / 2;
+        Set<Integer> lefts = helper(left, mid, stones);
+        Set<Integer> rights = helper(mid + 1, right, stones);
+        for (int l : lefts) {
+            for (int r : rights) {
+                res.add(l + r);
+                res.add(Math.abs(r - l));
+            }
+        }
+        return res;
+    }
+}
+
+//分成左右两堆，两堆相加或者相减的可能性，找到最小值
+
