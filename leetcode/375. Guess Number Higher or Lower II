@@ -1,0 +1,20 @@
+class Solution {
+    int[][] dp;
+    public int getMoneyAmount(int n) {
+        dp = new int[n+1][n+1];
+        return helper(1,n);
+    }
+    private int helper(int i,int j){        //取值范围 i->j
+        if(i >= j) return 0;
+        if(dp[i][j] !=0) return dp[i][j];   //dp不为0证明已经算过了
+        int res=Integer.MAX_VALUE;
+        for(int x =i;x <=j; x++){
+            res=Math.min(res,Math.max(helper(i,x-1), helper(x+1,j)) + x);
+        }
+        dp[i][j] = res;
+        return res;
+    }
+}
+
+//数字：1 2 3 4 。。。。。n, 要么是小于要么是大于，分两种情况看
+//假设任意猜的数为x，需要付的钱：x + max(helper(i,x-1),helper(x+1,j))
