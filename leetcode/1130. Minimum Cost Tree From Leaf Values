@@ -22,3 +22,20 @@ class Solution {
 }
 
 //ref: https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/discuss/398420/Java-DP-Solution-very-easy-to-understand
+
+class Solution {
+    public int mctFromLeafValues(int[] arr) {
+        Stack<Integer> stack = new Stack();
+        stack.push(Integer.MAX_VALUE);
+        int ans = 0;
+        for (int n : arr) {
+            while (stack.peek() < n) ans += stack.pop() * Math.min(stack.peek(), n);
+            stack.push(n);
+        }
+        while (stack.size() > 2) ans += stack.pop() * stack.peek();
+        return ans;
+    }
+}
+
+// ref: https://leetcode-cn.com/problems/minimum-cost-tree-from-leaf-values/solution/xiang-xi-jie-shi-dong-tai-gui-hua-dan-diao-zhan-ji/
+
