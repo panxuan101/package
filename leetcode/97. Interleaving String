@@ -1,0 +1,21 @@
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if((s1.length() + s2.length()) !=s3.length()) return false;  //边界条件
+        
+        boolean[][] dp=new boolean[s1.length() + 1][s2.length() + 1]; //初始化
+        dp[0][0]=true;
+        
+        for(int i=1; i<=s1.length(); i++){      //当s2为空时->j==0,check s1与s3是否match
+            dp[i][0]=dp[i-1][0] && s1.charAt(i-1) == s3.charAt(i-1);
+        }
+        for(int j=1; j<=s2.length(); j++){      //当s1为空时->i==0,check s2与s3是否match
+            dp[0][j]=dp[0][j-1] && s2.charAt(j-1) == s3.charAt(j-1);
+        }
+        for(int i=1; i<=s1.length(); i++){      //当s1,s2均不为空时,check s1,s2与s3是否match
+            for(int j=1; j<=s2.length(); j++){
+                dp[i][j] = ((s1.charAt(i-1) == s3.charAt(i+j-1) && dp[i-1][j])) || ((s2.charAt(j-1) == s3.charAt(i+j-1) && dp[i][j-1])); 
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+}
