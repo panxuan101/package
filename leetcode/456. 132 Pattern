@@ -1,0 +1,19 @@
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        //132-> 小大中，这题我从中间值开始找起
+        int mid=Integer.MIN_VALUE;
+        Stack<Integer> stack=new Stack<>(); 
+        
+        for(int i=nums.length -1; i>=0; i--){  //从后往前开始遍历
+            if(nums[i]<mid){                //假设stack中已经存了最大值
+                return true;
+            }else{
+                while(!stack.isEmpty() && nums[i] > stack.peek()){
+                    mid=stack.pop();
+                }
+                stack.push(nums[i]);     //stack中存的是最大值
+            }
+        }
+        return false;
+    }
+}
