@@ -1,0 +1,51 @@
+class Solution {
+    public String[] expand(String S) {
+         ArrayList<Character> stack = new ArrayList<>();
+        ArrayList<String> output = new ArrayList<>();
+        char[] chars = S.toCharArray();
+        boolean branch = false;
+        for(char c : chars) {
+            if(c==','){
+                continue;
+            } else if(c=='{'){
+                branch = true;
+                stack.clear();
+            } else if(c=='}'){
+                branch = false;
+                if(output.isEmpty()){
+                    for(Character ch: stack) {
+                        output.add(String.valueOf(ch));
+                    }
+                } else {
+                    ArrayList<String> current = (ArrayList<String>)output.clone();
+                    output.clear();
+                    for(String s: current){
+                        for(Character ch: stack) {
+                            String ns = s + String.valueOf(ch);
+                            output.add(ns);
+                        }
+                    }
+                }
+                stack.clear();
+            } else if(branch) {
+                stack.add(c);
+            } else {
+                if(output.isEmpty()){
+                    output.add(String.valueOf(c));
+                }else {
+                    ArrayList<String> current = (ArrayList<String>)output.clone();
+                    output.clear();
+                    for(String s: current){
+                        String ns = s + String.valueOf(c);
+                        output.add(ns);
+                    }
+                }
+            }
+        }
+        
+        Collections.sort(output);
+        String[] strs = output.toArray(new String[output.size()]);
+        return strs;
+    }
+}
+  
