@@ -1,0 +1,55 @@
+class Solution {
+    int i =0;
+    public List<String> braceExpansionII(String expression) {
+        if (expression == null) {
+            return new ArrayList<>();
+        }
+        Set<String> result = parseExpr(expression);
+        
+        List<String> sorted = new ArrayList<>(result); //put set into list
+        Collections.sort(sorted); //sort
+        return sorted;
+    }
+    
+    private Set<String> parseExpr(String expression) {
+        Set<String> result = new HashSet<>();
+        result.add("");//start off with empty element for results
+        while (true) {
+            if (i >= expression.length() || expression.charAt(i) == '}') { //exist when i is past length, or end brace
+                i++; //done with a set
+                return result;
+            } else if (expression.charAt(i) == '{') { //start of expression
+                i++;
+                result = crossSet(result, parseExpr(expression));
+            } else if (expression.charAt(i) == ',') { //comma is a union of possibilites
+                i++;
+                result.addAll(parseExpr(expression)); 
+                return result;
+            } else {
+                result = crossSet(result, "" + expression.charAt(i)); //otherwise do a cross set
+                i++;
+            }
+        }
+    }
+    
+    private Set<String> crossSet(Set<String> set1, String s2) { 
+        //take result and remaining string
+        Set<String> result = new HashSet<>();
+        for (String s1 : set1) {
+            result.add(s1 + s2); //add results. xa, xb
+        }
+        return result;
+    }
+    
+    private Set<String> crossSet(Set<String> set1, Set<String> set2) {
+        Set<String> result = new HashSet<>(); //cartesian of the strings
+        for (String s1 : set1) {
+            for (String s2 : set2) {
+                result.add(s1 + s2);
+            }
+        }
+        return result;
+    }
+    
+}
+   
