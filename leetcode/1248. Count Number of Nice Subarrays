@@ -1,0 +1,25 @@
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int l=0; 
+        int r=0;
+        int res=0;
+        int count=0; //数有多少个偶数
+
+        while(r < nums.length){ 
+            if(nums[r] % 2==1){
+                k--;
+                count=0;    
+}
+            while(k==0){
+                if(nums[l] % 2==1){
+                    k++;
+                }
+                count++;
+                l++;
+            }   
+            r++;
+            res +=count;
+}
+        return res;
+    }
+}
