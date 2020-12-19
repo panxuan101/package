@@ -1,0 +1,21 @@
+class Solution {
+    public int minOperations(int[] nums, int x) {
+        int l=0,r=0;
+        int size=-1; //中间区间大小
+        int sum=Arrays.stream(nums).sum();
+        int midSum=0;  //中间区间sum
+        while(r < nums.length){
+            midSum +=nums[r];
+            r++;
+            while(midSum > sum - x && l < nums.length){
+                midSum -=nums[l];
+                l++;
+            }
+            if(midSum == sum - x){
+                size=Math.max(size,r-l);
+            }
+        }
+        return size < 0 ? -1 : nums.length - size;
+    }
+}
+//需要找左右两边和为x并且是最小个数(外部最小)，可以等价于找中间这个区间的最大个数子集（中间最大），子集值为sum(nums)-x
