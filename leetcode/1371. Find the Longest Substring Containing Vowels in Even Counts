@@ -1,0 +1,37 @@
+class Solution {
+    public int findTheLongestSubstring(String s) {
+        int a=0, e=0, i=0,o=0,u=0;   //元音字母个数初始化
+        int res=0;
+        int len=s.length();
+        
+        while(len>0){
+            for(int fp = 0; fp<s.length()-len;fp++){
+                a=0;
+                e=0;
+                i=0;
+                o=0;
+                u=0;
+                for(int r=fp; r<fp+len; r++){
+                    char c= s.charAt(r);
+                    switch(c){
+                            case'a':a++;break;
+                            case'e':e++;break;
+                            case'i':i++;break;
+                            case'o':o++;break;
+                            case'u':u++;break;
+                        default:break;
+                    }
+                }
+                if(isEven(a)&&isEven(e)&&isEven(i)&&isEven(o)&&isEven(u)){
+                        return len;
+                    }
+            }
+            len--;
+        }
+        return res;
+    }
+    private boolean isEven(int n){
+        return n%2==0;
+    }
+}
+//这题多数人用bit来解的，参考这个同学的讲解非常仔细：https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/solution/zhuang-tai-ya-suo-zhi-mei-ge-yuan-yin-ba-cn2d/
