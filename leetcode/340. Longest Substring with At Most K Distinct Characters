@@ -20,3 +20,27 @@ class Solution {
 
 //sliding window
 //time:O(n)->sliding window , space:O(1)->256
+class Solution {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+       HashMap<Character,Integer> map=new HashMap<>();
+        int l=0, r=0;
+        int res=0;
+        while(r<s.length()){
+            if(map.size() <= k){
+                map.put(s.charAt(r),r);
+                r++;
+            }
+            if(map.size() > k){            
+                int rmv=s.length();
+                for(int num : map.values()){
+                    rmv=Math.min(rmv,num);
+                }
+                map.remove(s.charAt(rmv));
+                l=rmv+1;
+            }
+            res=Math.max(res,r-l);
+        }
+        return res;
+    }
+} 
+    
