@@ -1,0 +1,29 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(nums==null || nums.length==0){
+            return new int[0];
+        }
+        Deque<Integer> deque=new LinkedList<>();
+        int[] res=new int[nums.length-k+1]; 
+         for(int i=0; i<nums.length; i++){
+             if(!deque.isEmpty() && deque.peekFirst() == i-k){
+                 deque.poll();
+             }
+             while(!deque.isEmpty() && nums[deque.peekLast()] < nums[i]){
+                 deque.removeLast();
+             }
+             deque.offerLast(i);
+             if((i+1)>=k){
+                 res[i-k+1] = nums[deque.peek()];
+             }
+         }  
+        return res;
+    }
+}
+
+/**
+deque: 存的是index， 从大到小排序
+time:O(n)
+space:O(n)
+参考：https://leetcode-cn.com/problems/sliding-window-maximum/solution/shuang-xiang-dui-lie-jie-jue-hua-dong-chuang-kou-2/
+*/
