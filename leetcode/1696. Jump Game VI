@@ -1,0 +1,28 @@
+class Solution {
+    public int maxResult(int[] nums, int k) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Deque<Integer> queue = new LinkedList<>();
+        dp[0] = nums[0];
+        queue.offerLast(0);
+        for (int i = 1; i < n; i++) {
+            if (i > k && i - k - 1 == queue.getFirst()) {
+                queue.pollFirst();
+            }
+
+            dp[i] = nums[i] + dp[queue.getFirst()];
+
+            while (!queue.isEmpty() && dp[queue.getLast()] < dp[i]) {
+                queue.pollLast();
+            }
+
+            queue.offerLast(i);
+        }
+        return dp[n - 1];
+    }
+}
+
+
+
+//ref:https://leetcode-cn.com/problems/jump-game-vi/solution/dong-tai-gui-hua-dan-diao-di-jian-dui-li-9eif/
+//ref:https://leetcode.com/problems/jump-game-vi/discuss/978586/Java-7-lines-of-code-or-DP-and-Sliding-window-max-using-Deque-or-with-explanation
