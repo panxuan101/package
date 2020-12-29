@@ -1,0 +1,21 @@
+class Solution {
+    public int findLatestStep(int[] arr, int m) {
+       TreeSet<Integer> set=new TreeSet<>();
+        set.add(0);
+        set.add(arr.length+1);
+        if(arr.length==m) return arr.length;
+        int n=arr.length;
+        for (int i = n-1; i >=0; i--) {
+            int index=arr[i];
+            int a=set.lower(index);
+            int b=set.higher(index);
+            if(index-a-1==m||b-index-1==m){
+                return i;
+            }
+            set.add(index);
+        }
+        return -1;
+    }
+}
+
+//ref:https://leetcode-cn.com/problems/find-latest-group-of-size-m/solution/fan-xiang-qjing-wei-shen-sui-ran-wo-yun-xing-shi-j/
