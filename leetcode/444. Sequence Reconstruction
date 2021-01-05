@@ -1,0 +1,57 @@
+class Solution {
+    public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {         
+        Map<Integer, Integer> inDegree = new HashMap<>();        
+        Map<Integer, Set<Integer>> g = new HashMap<>();
+
+        for(List<Integer> seq: seqs) {
+            for(int node: seq) {
+                g.putIfAbsent(node, new HashSet<>());
+                inDegree.putIfAbsent(node, 0);
+            }
+        }
+
+        if(inDegree.size() != org.length) return false;
+
+        for(List<Integer> seq: seqs) {
+            for(int i = 0; i < seq.size() - 1; i ++) {
+                int parent = seq.get(i);
+                int child = seq.get(i+1);
+
+                if(g.get(parent).add(child)) {
+                    inDegree.put(child, inDegree.get(child) + 1);
+                }
+            }   
+        }
+        Queue<Integer> q = new LinkedList<>();
+        
+        for(int key : inDegree.keySet()) {
+            if(inDegree.get(key) == 0){
+                q.add(key);
+            }
+        }
+        int [] res = new int [org.length];
+        int i = 0;
+
+        while(!q.isEmpty()) {
+           
+            if(q.size() > 1) return false;
+            int node = q.poll();
+            Set<Integer> children = g.get(node);
+            res[i++] = node;
+            for(int child: children) {
+                inDegree.put(child, inDegree.get(child) - 1);
+                if(inDegree.get(child) == 0){
+                    q.add(child);
+                }
+            }
+        }
+ 
+        for(i = 0 ; i < org.length ; i++) {
+            if(res[i] != org[i])
+                return false;
+        }
+        
+        return true;
+    }
+}
+//这题没做出来，参考的这位同学的代码 ref:https://leetcode.com/problems/sequence-reconstruction/discuss/792674/JAVA-Simple-Topological-sort-solution-with-detailed-explanation-(62ms)
