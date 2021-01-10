@@ -1,0 +1,26 @@
+class Solution {
+    private int INF = 0x3f3f3f3f;
+    public int networkDelayTime(int[][] times, int N, int K) {
+        int[][] d=new int[N+1][N+1];
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<=N; j++){
+                d[i][j]= i== j ? 0 : 0x3f3f3f3f;
+            }
+        }
+        for(int[] time:times){
+            d[time[0]][time[1]]=time[2];
+        }
+        for(int k =1; k <= N; k++){
+            for(int i=1; i<=N; i++){
+                for(int j=1;j<=N; j++){
+                    d[i][j]=Math.min(d[i][j],d[i][k]+d[k][j]);
+                }
+            }
+        }
+        int res=0;
+        for(int i=1; i<=N; i++){
+            res= Math.max(res,d[K][i]);
+        }
+        return res == INF ? -1 : res;
+    }
+}
