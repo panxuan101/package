@@ -1,0 +1,38 @@
+class Solution {
+    public int minimumJumps(int[] forbidden, int a, int b, int x) {
+        int steps = 0; //number of steps
+        if(x==0){
+            return 0;
+        }
+        Queue<Pair<Integer,Integer>> q = new LinkedList(); //linked list of pairs, direction and position
+        q.offer(new Pair(0,0)); //initial position, initial direction. 0 is forward, 1 is backwards
+        Set<Pair<Integer,Integer>> visited = new HashSet<>(q); //all of our nodes that hvae been visited
+        int max = x + a + b; //maximum distance we can go
+        for(int pos : forbidden){ //add the forbidden items to the visited list so we don't go there twice
+            visited.add(new Pair(0,pos));
+            visited.add(new Pair(1,pos));
+            max = Math.max(max, pos + a + b);
+        }
+        while(!q.isEmpty()){ //keep going as long as queue is not empty, starts with initial position
+            for(int i = q.size(); i>0; --i){ //go over all of the items
+                Pair<Integer, Integer> p = q.poll(); //get the head of queue
+                int dir = p.getKey(); //current direction, fist number
+                int pos = p.getValue(); //current position, second number
+                if(pos==x){ //check if current position is on goal
+                    return steps;
+                }
+                Pair<Integer, Integer> forward = new Pair<>(0, pos + a); //create two new items going forward 
+                Pair<Integer, Integer> backward = new Pair<>(1, pos - b); //and going backwards, so we can text both poss
+                if(pos + a <= max && visited.add(forward)){ //check if current position + a goes over boundary, add forward to queue
+                    q.offer(forward);
+                }
+                if (dir == 0 && pos - b >= 0 && visited.add(backward)) { //add backgwards to the queue if not negative.
+                    q.offer(backward);
+                }
+            }
+            ++steps;
+        }
+        return -1;
+    }
+    
+}
