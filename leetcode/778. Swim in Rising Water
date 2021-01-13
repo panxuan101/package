@@ -1,0 +1,31 @@
+class Solution {
+    public int swimInWater(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int[] dirs = {0, 1, 0, -1, 0};
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> (a[2] - b[2]));
+        boolean[][] visit = new boolean[n][m];
+        pq.add(new int[]{0, 0, grid[0][0]});
+        visit[0][0] = true;
+        while (!pq.isEmpty()) {
+            int[] top = pq.poll();
+            int i = top[0];
+            int j = top[1];
+            int hi = top[2];
+            if (i == n - 1 && j ==  n - 1) return hi;
+            for (int k = 0; k < 4; k ++) {
+                int dx = i + dirs[k];
+                int dy = j + dirs[k + 1];
+                if (dx < 0 || dx >= n || dy < 0 || dy >= m || visit[dx][dy]) continue;
+                visit[dx][dy] = true;
+                int max = Math.max(hi, grid[dx][dy]);
+                pq.add(new int[]{dx, dy, max});
+            }
+
+        }
+        return 0;
+    }
+
+}
+//这题原始的没做出来，看了答案，这题跟之前做#329时的套路很像，这题用了pq去存，可以放一起总结一下
+//ref:https://leetcode-cn.com/problems/swim-in-rising-water/solution/java-bfs-priorityqueue-jie-fa-by-don-vito-corleone/
