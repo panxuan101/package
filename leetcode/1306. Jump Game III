@@ -1,0 +1,14 @@
+class Solution {
+    public boolean canReach(int[] arr, int start) {
+        boolean[] visited=new boolean[arr.length];
+        return dfs(arr,start,visited);
+    }
+    private boolean dfs(int[] arr, int cur, boolean[] visited){
+        if(cur<0 || cur>=arr.length || visited[cur]) return false;
+        if(arr[cur] ==0) return true;
+         visited[cur] = true;
+        
+    return dfs(arr,cur-arr[cur], visited) || dfs(arr,cur+arr[cur], visited);
+        
+    }
+}
