@@ -1,0 +1,65 @@
+class Solution {
+    public int openLock(String[] deadends, String target) {
+
+        Set<String> deads = new HashSet<>();
+        for (String s : deadends) deads.add(s);
+
+        Set<String> visited = new HashSet<>();
+
+        Queue<String> queue = new LinkedList();
+        queue.add("0000");
+        visited.add("0000");
+
+        int step = 0;
+
+
+        while (!queue.isEmpty()) {
+            int len = queue.size();
+
+            for (int i = 0; i < len; i++) {
+                String s = queue.poll();
+
+                if (deads.contains(s)) continue;
+                if (s.equals(target)) return step;
+
+
+                for (int j = 0; j < 4; j++) {
+                    String up = up(s, j);
+                    String down = down(s, j);
+                    if (!visited.contains(up)) {
+                        queue.add(up);
+                        visited.add(up);
+                    }
+                    if (!visited.contains(down)) {
+                        queue.add(down);
+                        visited.add(down);
+                    }
+
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+
+    public String up (String s, int j) {
+        char[] c = s.toCharArray();
+        if (c[j] == '9') {
+            c[j] = '0';
+        } else {
+            c[j]++;
+        }
+        return new String(c);
+    }
+
+    public String down (String s, int j) {
+        char[] c = s.toCharArray();
+        if (c[j] == '0') {
+            c[j] = '9';
+        } else {
+            c[j]--;
+        }
+        return new String(c);
+    }
+}
+//双bfs优化时间，有点类似lca的延伸问题，可以放一起看一下再总结
