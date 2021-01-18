@@ -1,0 +1,55 @@
+class Solution {
+    public class Point {
+        int x;
+        int y;
+        int h;
+        public Point(int x, int y, int h) {
+            this.x = x;
+            this.y = y;
+            this.h = h;
+        }
+    }
+
+    public int trapRainWater(int[][] heights) {
+        int r = heights.length, c = heights[0].length;
+        if (heights == null || r == 0 || c == 0)
+            return 0;
+
+        PriorityQueue<Point> queue = new PriorityQueue<>(new Comparator<Point>(){
+            public int compare(Point a, Point b) {
+                return a.h - b.h;
+            }
+        });
+        
+        for (int i = 0; i < r; i++) {
+            queue.offer(new Point(i, 0, heights[i][0]));
+            queue.offer(new Point(i, c - 1, heights[i][c - 1]));
+            heights[i][0]=-1; //visited 点设为-1
+            heights[i][c-1] = -1;
+        }
+
+        for (int i = 0; i < c-1; i++) {
+            queue.offer(new Point(0, i, heights[0][i]));
+            queue.offer(new Point(r - 1, i, heights[r - 1][i]));
+            heights[0][i] = -1;
+            heights[r-1][i] = -1;
+        }
+
+        int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int res = 0;
+        while (!queue.isEmpty()) {
+            Point cur = queue.poll();
+            for (int[] dir : dirs) {
+                int row = cur.x + dir[0];
+                int col = cur.y + dir[1];
+                if (row >= 0 && row < r && col >= 0 && col < c && heights[row][col] !=-1) {
+                    res += Math.max(0, cur.h - heights[row][col]);
+                    queue.offer(new Point(row, col, Math.max(heights[row][col], cur.h)));
+                    heights[row][col] = -1;
+                }
+            }
+        }
+        
+        return res;
+    }
+}
