@@ -1,0 +1,65 @@
+class Solution {
+    int[][] directions={{1,0},{-1,0},{0,-1},{0,1}};
+    public int cutOffTree(List<List<Integer>> forest) {
+        PriorityQueue<int[]> pq=new PriorityQueue<>((a,b) -> (a[2] - b[2]));
+        for(int i=0; i<forest.size(); i++){
+            for(int j=0; j<forest.get(0).size(); j++){
+                int height =forest.get(i).get(j);
+                if(height > 1){
+                    pq.offer(new int[]{i,j,height});
+                }
+            }
+        }
+        int res = 0;
+        int[] prev = new int[]{0, 0};
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int step = bfs(prev, cur, forest);
+            if (step < 0) {
+                return -1;
+            }
+            res += step;
+            prev[0] = cur[0];
+            prev[1] = cur[1];
+        }
+        
+        return res;   
+    }
+    
+    private int bfs(int[] start, int[] end, List<List<Integer>> forest) {
+        int r =forest.size();
+        int c =forest.get(0).size();
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(start);
+        boolean[][] visited = new boolean[r][c];
+        visited[start[0]][start[1]] = true;
+        int step = 0;
+        
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                if (cur[0] == end[0] && cur[1] == end[1]) {
+                    return step;
+                }
+                
+                for (int j = 0; j < 4; j++) {
+                    int newX = cur[0] + directions[j][0];
+                    int newY = cur[1] + directions[j][1];
+                    if (isValid(newX, newY, forest, visited)){
+                        q.offer(new int[]{newX, newY});
+                        visited[newX][newY] = true;
+                    }
+                }    
+            }
+            
+            step++;
+        }
+        
+        return -1;    
+    }
+    
+    private boolean isValid(int x, int y, List<List<Integer>> forest, boolean[][] visited) {
+        return (x >= 0 && x < forest.size() && y >= 0 && y < forest.get(0).size() && forest.get(x).get(y) > 1 && !visited[x][y]);
+    }
+}
