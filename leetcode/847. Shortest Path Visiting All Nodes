@@ -1,0 +1,30 @@
+class Solution {
+    public int shortestPathLength(int[][] graph) {
+        int len=graph.length;
+        boolean[][] visited=new boolean[len][1<<len];
+        Queue<int[]> queue=new LinkedList<>();  //数组里表示{node,state}
+        for(int i=0; i<len; i++){
+            queue.offer(new int[]{i,1<<i});
+        }
+        int step=0;
+        while(!queue.isEmpty()){
+            for(int i = queue.size(); i > 0; i--){
+                int[] cur=queue.poll();
+                if(cur[1]==(1<<len) -1) return step;
+                
+                for(int next:graph[cur[0]]){
+                    int nextState=cur[1]|(1<<next); // 2个节点相或,表示访问了这条边的2个点
+                    if(visited[next][nextState]){
+                        continue;
+                    }
+                    visited[next][nextState]=true;
+                    queue.offer(new int[]{next,nextState}); // 将该节点和边的信息加入bfs对列
+                }
+        }
+            step++;
+    }
+        return 0;
+}
+}
+
+//ref:https://leetcode-cn.com/problems/shortest-path-visiting-all-nodes/solution/java-7ms-ji-bai-liao-9949-de-yong-hu-by-copbint/
