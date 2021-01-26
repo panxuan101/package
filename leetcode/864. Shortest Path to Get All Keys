@@ -1,0 +1,74 @@
+class Solution {
+    
+   private class Node{
+        int x,y,len,key;
+        Node(int key,int x,int y,int len){
+            this.key = key;
+            this.x = x;
+            this.y = y;
+            this.len = len;
+        }
+    }
+    int[] l = {-1,0,1,0};
+    int[] r = {0,-1,0,1};
+    int ans = 0;
+    public int shortestPathAllKeys(String[] grid) {
+        int n = grid.length;
+        int m = grid[0].length();
+        boolean[][][] visit = new boolean[64][n][m];
+        int sx=0,sy=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                char c = grid[i].charAt(j);
+                if(c == '@'){
+                    sx=i;
+                    sy=j;
+                }else if(c >= 'a' && c <='f'){
+                    ans |= 1<<(c-'a');
+                }
+            }
+        }
+        Queue<Node> Q = new ArrayDeque<>();
+        Q.add(new Node(0,sx,sy,0));
+        visit[0][sx][sy] = true;
+        while(!Q.isEmpty()){
+            Node node = Q.poll();
+            int key = node.key;
+            int x = node.x;
+            int y = node.y;
+            int len = node.len;
+            for(int i=0;i<4;i++){
+                int tx = x + l[i];
+                int ty = y + r[i];
+                if(check(grid,tx,ty) && visit[key][tx][ty] == false){
+                    char c = grid[tx].charAt(ty);
+                    if(c >= 'A' && c <= 'F'){
+                        if((key & (1<<(c-'A'))) == 0)continue;
+                    }
+                    int tmp = key;
+                    if(c >= 'a' && c <= 'f'){
+                        tmp |= 1<<(c-'a');
+                    }
+                    if(tmp == ans)return len+1;
+                    visit[tmp][tx][ty] = true;
+                    Q.add(new Node(tmp,tx,ty,len+1));
+                }
+            }
+        }
+        return -1;
+    }
+
+    private boolean check(String[] grid, int tx, int ty) {
+        int n = grid.length;
+        int m = grid[0].length();
+        if(tx>=0 && tx<n && ty>=0 && ty<m && grid[tx].charAt(ty) != '#'){
+            return true;
+        }
+        return false;
+    }
+}
+//思路解法和#847类似
+// ref:https://leetcode-cn.com/problems/shortest-path-to-get-all-keys/solution/zhong-gui-zhong-ju-zhuang-tai-ya-suo-chang-gui-bfs/
+//ref:https://leetcode-cn.com/problems/shortest-path-to-get-all-keys/solution/zhuang-tai-ya-suo-bfs-by-lucifer1004/
+
+//状态： 2^6 =64
