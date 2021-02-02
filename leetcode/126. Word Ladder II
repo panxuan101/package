@@ -1,0 +1,44 @@
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> dict = new HashSet<>();
+        for(String word : wordList){
+            dict.add(word);
+        }
+        Queue<List<String>> queue = new LinkedList<>();
+        List<String> path = new ArrayList<>();
+        path.add(beginWord);
+        queue.offer(path);
+        List<List<String>> res = new ArrayList<>();
+        
+        while(!queue.isEmpty()){
+            if(!res.isEmpty()) return res;
+            int size = queue.size();
+            for(int i=0; i<size; i++){
+                List<String> currentList=queue.poll();
+                String currentWord = currentList.get(currentList.size() - 1);
+                dict.remove(currentWord);
+                if(currentWord.equals(endWord)){
+                    res.add(new ArrayList<>(currentList));
+                }else{
+                    StringBuilder sb = new StringBuilder(currentWord);
+                    for(int j=0; j < currentWord.length(); j++){
+                     for(char c = 'a'; c <='z'; c++){
+                        if(c== currentWord.charAt(j)){
+                            continue;
+                        }
+                        sb.setCharAt(j,c);
+                        if(dict.contains(sb.toString())){
+                            currentList.add(sb.toString());
+                            queue.offer(new ArrayList<>(currentList));
+                            currentList.remove(currentList.size() - 1);
+                        }
+                     }
+                        sb.setCharAt(j, currentWord.charAt(j));
+                }
+            }
+        }
+        }
+        return res;
+
+    }
+}
