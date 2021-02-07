@@ -1,0 +1,38 @@
+class Solution {
+    Set<Integer> col = new HashSet<>();
+    Set<Integer> diff = new HashSet<>();
+    Set<Integer> sum = new HashSet<>();
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res =new ArrayList<>();
+        char[][] board = new char[n][n];
+        for(int i = 0; i< n; i++){
+            for(int j=0; j<n; j++){
+                board[i][j] = '.';
+            }
+        }
+        dfs(n,0,res,board);
+        return res;
+    }
+    private void dfs(int n, int level, List<List<String>> res, char[][]board){
+        if(level == n){
+            List<String> temp = new ArrayList<>();
+            for(int i = 0; i<n; i++){
+                temp.add(String.valueOf(board[i]));
+            }
+            res.add(temp);
+        }
+        for(int i = 0;i<n; i++){
+            if(!col.contains(i) && !diff.contains(level - i) && !sum.contains(level + i)){
+                col.add(i);
+                diff.add(level - i);
+                sum.add(level + i);
+                board[level][i] = 'Q';
+                dfs(n,level + 1, res, board);
+                board[level][i] ='.';
+                col.remove(i);
+                diff.remove(level - i);
+                sum.remove(level + i);
+            }
+        }
+    }
+}
