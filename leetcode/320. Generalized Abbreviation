@@ -1,0 +1,20 @@
+class Solution {
+    public List<String> generateAbbreviations(String word) {
+        List<String> res = new ArrayList<>();
+        dfs(res,0,word,new StringBuilder(),0);
+        return res;
+    }
+    private void dfs(List<String> res, int pos, String word, StringBuilder cur, int count){
+        if(pos == word.length()){
+            res.add(cur.toString() + (count==0?"":count));
+    
+        }else{
+            int len=cur.length();
+            dfs(res,pos+1,word,cur,count +1);
+            if (count != 0) cur.append(count);
+            dfs(res, pos + 1, word, cur.append(word.charAt(pos)), 0);
+
+            cur.setLength(len);
+        }
+    }
+}
