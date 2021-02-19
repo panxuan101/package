@@ -1,0 +1,29 @@
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> res = new ArrayList<>();
+        dfs(res,new ArrayList<>(),s,0);
+        return res;
+    }
+    private void dfs(List<List<String>> res, List<String> cur, String s ,int l){
+        if( l== s.length()){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+        for(int r=l; r<s.length(); r++){
+            if(isPalindrome(l,r,s)){
+                cur.add(s.substring(l,r+1));
+                dfs(res,cur,s,r+1);
+                cur.remove(cur.size()-1);
+            }
+        }
+    
+    }
+    private boolean isPalindrome(int l, int r, String s){
+        while(l<=r){
+            if(s.charAt(l) != s.charAt(r)) return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+}
