@@ -1,0 +1,29 @@
+class Solution {
+    int countOfNodes = 0;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode result = dfs(root,p,q);
+        if(countOfNodes==2){
+            return result;
+        } else {
+            return null;
+        }
+    }
+    
+    public TreeNode dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null) return root; //递归的出口
+        
+        TreeNode left=dfs(root.left,p,q);
+        TreeNode right=dfs(root.right,p,q);
+        //左右都返回！null时
+        
+        if (root == p || root == q) {
+            countOfNodes++; // need this for (5,10) and (5,4) case
+            return root;
+        }
+        if(left !=null && right !=null){
+            return root;
+        }
+        //左右至少有一边为null时，return不为null的那一边
+        return left==null ? right:left;  
+    }
+}
