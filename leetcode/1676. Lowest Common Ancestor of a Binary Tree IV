@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode[] nodes) {
+         if(root==null || hasNode(root,nodes)) return root; //递归的出口
+        
+        TreeNode left=lowestCommonAncestor(root.left,nodes);
+        TreeNode right=lowestCommonAncestor(root.right,nodes);
+        //左右都返回！null时
+        if(left !=null && right !=null){
+            return root;
+        }
+        //左右至少有一边为null时，return不为null的那一边
+        return left==null ? right:left;  
+    }
+    
+    public boolean hasNode(TreeNode node, TreeNode[] nodes) {
+        for(TreeNode n : nodes) {
+            if(node==n){
+                return true;
+            }
+        }
+        return false;
+    }
+}
