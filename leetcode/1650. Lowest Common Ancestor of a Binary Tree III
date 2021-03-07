@@ -1,0 +1,38 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node parent;
+};
+*/
+
+class Solution {
+    public Node lowestCommonAncestor(Node p, Node q) {
+        Node root = getRoot(p);
+        Node lca = dfs(root,p,q);
+        return lca;
+    }
+    
+    public Node getRoot(Node p) {
+        if(p.parent==null){
+            return p;
+        } else {
+            return getRoot(p.parent);
+        }
+    }
+    
+    public Node dfs(Node root, Node p, Node q) {
+        if(root==null || root==p ||root==q) return root; //递归的出口
+        
+        Node left=dfs(root.left,p,q);
+        Node right=dfs(root.right,p,q);
+        //左右都返回！null时
+        if(left !=null && right !=null){
+            return root;
+        }
+        //左右至少有一边为null时，return不为null的那一边
+        return left==null ? right:left;  
+    }
+}
