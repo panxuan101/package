@@ -1,0 +1,55 @@
+class Solution {
+    public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+        Comparator c = new Comparator<int[]>(){ 
+            //按照开始时间升序排序，和其他几种写法做对比
+          
+            public int compare(int[] o1, int[] o2){
+                return o1[0] - o2[0];
+            }
+        };
+        Arrays.sort(slots1,c);
+        Arrays.sort(slots2,c);
+        int i1 =0, i2=0;
+        while(i1<slots1.length && i2 < slots2.length){
+            if(slots1[i1][1]<slots2[i2][0]){
+                i1++; //客户1的index++ 当其结束时间《 客户2的开始时间，无交集
+            }else if(slots2[i2][1]<slots1[i1][0]){
+                i2++; //客户2的index++ 当其结束时间《 客户1的开始时间，无交集
+                
+                //客户2是客户1的子集
+            }else if(slots1[i1][0] <= slots2[i2][0] && slots1[i1][1] >= slots2[i2][1]){
+                if(slots2[i2][1] - slots2[i2][0] >= duration){
+                    return aList(slots2[i2][0], duration);
+                }
+                i2++;
+            }
+               //客户1是客户2的子集
+        else if(slots2[i2][0] <= slots1[i1][0] && slots2[i2][1] >= slots1[i1][1]){
+                if(slots1[i1][1] - slots1[i1][0] >= duration){
+                    return aList(slots1[i1][0], duration);
+                }
+                i1++;
+            }
+        //有部分交集
+        else if(slots2[i2][1] >= slots1[i1][0] && slots2[i2][0] < slots1[i1][0]){
+                if(slots2[i2][1] - slots1[i1][0] >= duration){
+                    return aList(slots1[i1][0], duration);
+                }
+                i2++;
+            }
+        else if(slots1[i1][1] >= slots2[i2][0] && slots1[i1][0] < slots2[i2][0]){
+                if(slots1[i1][1] - slots2[i2][0] >= duration){
+                    return aList(slots2[i2][0], duration);
+                }
+                i1++;
+            }
+        }
+    return new ArrayList<>();
+    }
+List<Integer> aList(int start, int duration){
+    List<Integer> res = new ArrayList<>();
+    res.add(start);
+    res.add(start + duration);
+    return res;
+}
+}
