@@ -1,0 +1,32 @@
+class Solution {
+    int mod = 1000000007;
+    public int numSubseq(int[] nums, int target) {
+        Arrays.sort(nums);
+        int[] sub = new int[nums.length];
+        sub[0]=1;
+        for(int i=1; i<nums.length; i++){
+            sub[i]=(2*sub[i-1] + 1)% mod;
+        }
+        int res=0;
+        for(int i=0; i<nums.length && 2*nums[i]<=target; i++){
+            res = (res+1) %mod;
+            
+            int l =i;
+            int r =nums.length -1;
+            while(l+1<r){
+                int mid = (l+r)/2;
+                if(nums[mid] + nums[i] > target){
+                    r = mid -1;
+                }else{
+                    l=mid;
+                }
+            }
+                if(r > i && nums[r] + nums[i] <= target){
+                    res = (res+sub[r-i-1]) % mod;
+                }else if(l > i){
+                    res =(res + sub[l-i-1]) % mod;
+                }
+            }
+               return res; 
+        }
+}
