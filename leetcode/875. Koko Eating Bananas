@@ -1,0 +1,25 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int max=1;
+        for(int pile : piles){
+            max = Math.max(max,pile);
+        }
+        int l = 1, r = max;
+        while(l<r){
+            int mid = l +(r -l)/2;
+            if(sum(piles,mid) > h){
+                l = mid + 1;
+            }else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+    private int sum(int[] piles, int speed){
+        int s =0;
+        for(int pile:piles){
+            s +=(pile+speed - 1)/speed;
+        }
+        return s;
+    }
+}
