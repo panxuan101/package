@@ -1,0 +1,37 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int n=nums.length;
+        int max=0,sum=0;
+        for(int num:nums){
+            max= Math.max(max,num);
+            sum +=num;
+        }
+        int low = max;
+        int high = sum;
+        while(low < high){
+            int mid=low+(high - low)/2;
+            int sub = split(nums,mid);
+            if(sub > m){
+                low =mid+1;
+            }else{
+                high = mid;
+            }
+        }
+        return low;
+    }
+    private int split(int[] nums, int maxSum){
+        int sub =1;
+        int temp=0;
+        for(int num : nums){
+            if(temp + num > maxSum){
+                temp =num;
+                sub++;
+            }else{
+                temp +=num;
+            }
+        }
+        return sub;
+    }
+}
+
+//参考的这个小姐姐的视频：https://www.youtube.com/watch?v=Ksmmhee4lYE
