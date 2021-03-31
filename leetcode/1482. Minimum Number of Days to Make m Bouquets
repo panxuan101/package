@@ -1,0 +1,36 @@
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        if(m*k > bloomDay.length) return -1;
+        
+        int r=0;
+        for(int i : bloomDay){
+            r = Math.max(r,i);
+        }
+        int l=0;
+        while(l < r){
+            int mid=l +(r-l)/2;
+            int count = sum(bloomDay,mid,k);
+            if(count >= m){
+                r=mid;
+            }else{
+                l = mid+1;
+            }
+        }
+        return l;
+    }
+    private int sum(int[] arr, int day, int k){
+        int res=0, count=0;
+        for(int i=0;i<arr.length; i++){
+            if(arr[i] <= day){
+                count++;
+            }else{
+                count =0;
+            }
+            if(count == k){
+                res++;
+                count=0;
+            }
+        }
+        return res;
+    }
+}
