@@ -1,0 +1,31 @@
+class Solution {
+    public int maximizeSweetness(int[] sweetness, int K) {
+       int sum =0;
+        int min = Integer.MAX_VALUE;
+        for(int n : sweetness){
+            sum +=n;
+            min = Math.min(min,n);
+        }
+        int l=min, r=sum;
+        while(l<r){
+            int mid=l+(r-l+1)/2;
+            if(helper(sweetness,mid,K)){
+                l=mid;
+            }else{
+                r=mid-1;
+            }
+        }
+        return l;
+    }
+    private boolean helper(int[] sweetness,int val, int K){
+        int sum=0,count=0;
+        for(int n: sweetness){
+            sum +=n;
+            if(sum >= val){
+                count++;
+                sum=0;
+            }
+        }
+        return count >= K+1;
+    }
+}
