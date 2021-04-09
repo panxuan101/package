@@ -1,0 +1,27 @@
+class Solution {
+    int index = 0;
+    public TreeNode recoverFromPreorder(String S) {
+        return helper(S,0);
+    }
+    public TreeNode helper(String s, int depth){
+        int level = 0;
+        while(index + level < s.length() && s.charAt(index + level) == '-'){
+            level++;
+        }
+        if(level !=depth) return null;
+        int next = index + level;
+        while(next < s.length() && s.charAt(next) !='-'){
+            next++;
+        }
+        int val = Integer.parseInt(s.substring(index + level, next));
+        index = next;
+        TreeNode root = new TreeNode(val);
+        root.left = helper(s,depth + 1);
+        if(root.left == null){
+            root.right = null;
+        }else{
+            root.right = helper(s,depth + 1);
+        }
+        return root;
+    }
+}
