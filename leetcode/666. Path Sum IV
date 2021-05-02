@@ -1,0 +1,31 @@
+class Solution {
+    public int pathSum(int[] nums) {
+        if(nums.length == 0) return 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        int sum=0;
+        for(int num : nums){
+            int level = num/100;
+            int value = num%10;
+            int key =(num - value)/10;
+            int col = (num%100 - value)/10;
+            
+            if(level == 1){
+                map.put(11,value);
+            }else{
+                int upperKey =(level - 1) * 10 + (col + 1)/2;
+                map.put(key,value + map.get(upperKey));
+            }
+}
+        for(int key : map.keySet()){
+            int level = key/10;
+            int col = key%10;
+            
+            int l = 10*(level + 1) + col *2-1;
+            int r = 10*(level + 1) + col*2;
+            if(!map.containsKey(l) && !map.containsKey(r)){
+                sum +=map.get(key);
+            }
+        }
+        return sum;
+    }
+}
