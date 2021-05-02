@@ -1,0 +1,46 @@
+class Solution {
+    Map<TreeNode,List<TreeNode>> map=new HashMap<>(); 
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        List<Integer> res = new ArrayList<>();
+        if(K<0) return res;
+        buildGraph(root,null);
+        Set<TreeNode> visited=new HashSet<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(target);
+        visited.add(target);
+        while(!q.isEmpty()){
+            int size = q.size();
+            if(K==0){
+                for(int i=0; i<size; i++){
+                    TreeNode cur = q.poll();
+                    res.add(cur.val);
+                }
+                return res;
+            }
+            for(int i=0;i<size; i++){
+                TreeNode cur = q.poll();
+                for(TreeNode nei:map.get(cur)){
+                    if(visited.contains(nei)){
+                        continue;
+                    }
+                    q.offer(nei);
+                    visited.add(nei);
+                }
+            }
+            K--;
+        }
+        return res;
+    }
+    private void buildGraph(TreeNode node, TreeNode parent){
+        if(node == null) return;
+        if(!map.containsKey(node)){
+            map.put(node, new ArrayList<TreeNode>());
+            if(parent !=null){
+                map.get(node).add(parent);
+                map.get(parent).add(node);
+            }
+            buildGraph(node.left,node);
+            buildGraph(node.right,node);
+        }
+    }
+}
