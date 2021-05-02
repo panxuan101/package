@@ -1,0 +1,27 @@
+class Solution {
+    public int countNodes(TreeNode root) {
+        int l = helperL(root);
+        int r = helperR(root);
+        if(l == r){
+            return(1 << l) - 1;
+        }else{
+            return 1 + countNodes(root.left) + countNodes(root.right);
+        }
+    }
+   private int helperL(TreeNode root){
+       int res = 0;
+       while(root !=null){
+           root = root.left;
+           res++;
+       }
+       return res;
+   }
+  private int helperR(TreeNode root){
+       int res = 0;
+       while(root !=null){
+           root = root.right;
+           res++;
+       }
+       return res;
+   }
+}
