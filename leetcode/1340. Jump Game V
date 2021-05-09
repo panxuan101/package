@@ -1,0 +1,44 @@
+class Solution {
+    int[] arr;
+    int n, d;
+    int[] dp;
+    public int maxJumps(int[] arr, int d) {
+        this.arr = arr;
+        this.n = arr.length;
+        this.d = d;
+        dp = new int[n];
+        int res =0;
+        for(int i =0; i<n; i++){
+            res = Math.max(res, getRes(i));
+        }
+        return res;
+    }
+    
+    private int getRes(int p){
+        if(dp[p] !=0) return dp[p];
+        int left =0;
+        int l =1;
+        while(p-l >= 0 && l<=d){
+            if(arr[p-l] >= arr[p]){
+                break;
+            }else{
+                if(dp[p-l]==0) dp[p-l] = getRes(p-l);
+                left = Math.max(left,dp[p-l]);
+                l++;
+            }
+        }
+        int right = 0;
+        int r = 1;
+        while(p+r < n && r <= d){
+            if(arr[p+r] >= arr[p]){
+                break;
+            }else{
+                if(dp[p+r] == 0) dp[p+r] = getRes(p+r);
+                right = Math.max(right,dp[p+r]);
+                r++;
+            }
+        }
+        dp[p] = Math.max(left,right) +1;
+        return dp[p];
+    }
+}
