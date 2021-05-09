@@ -1,0 +1,27 @@
+class Solution {
+    public int oddEvenJumps(int[] arr) {
+        int n = arr.length;
+        TreeMap<Integer,Integer> map = new TreeMap<>();
+        map.put(arr[n - 1], n-1);
+        boolean[] odd = new boolean[n];
+        boolean[] even = new boolean[n];
+        odd[n - 1] = true;
+        even[n - 1] = true;
+        
+        for(int i = n - 2; i>=0; i--){
+            Map.Entry oddEntry = map.ceilingEntry(arr[i]), evenEntry = map.floorEntry(arr[i]);
+            if(oddEntry !=null){
+                odd[i] = even[(int)oddEntry.getValue()];
+            }
+            if(evenEntry !=null){
+                even[i] = odd[(int)evenEntry.getValue()];
+            }
+            map.put(arr[i],i);
+        }
+        int res =0;
+        for(boolean b : odd){
+            if(b) res++;
+        }
+        return res;
+    }
+}
