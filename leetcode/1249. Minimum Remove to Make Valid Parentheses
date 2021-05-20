@@ -1,0 +1,26 @@
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        if(s == null || s.length() == 0) return "";
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        for(char c : s.toCharArray()){
+            if(c == '('){
+                count++;
+            }else if(c == ')'){
+                if(count == 0){
+                    continue;
+                }
+                count--;
+            }
+            sb.append(c);
+        }
+        StringBuilder res = new StringBuilder();
+        for(int i = sb.length() - 1; i >=0; i--){
+            if(sb.charAt(i) == '(' && count-- > 0){
+                continue;
+            }
+            res.append(sb.charAt(i));
+        }
+        return res.reverse().toString();
+    }
+}
