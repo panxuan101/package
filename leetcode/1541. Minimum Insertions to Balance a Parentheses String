@@ -1,0 +1,34 @@
+class Solution {
+    public int minInsertions(String s) {
+        int count = 0;
+    int rightCount = 0;
+
+    int len = s.length();
+
+    for (int i = 0; i < len; i++) {
+        if (s.charAt(i) == ')') {
+            ++rightCount;
+        } else {
+            if ((rightCount & 1) == 1) ++count;
+            rightCount = 0;
+        }
+    }
+    count += rightCount & 1;
+
+    s = s.replace("))", ")");
+
+    int left = 0, right = 0;
+    for (int i = 0; i < s.length(); ++i) {
+        right += (s.charAt(i) == '(') ? 1 : -1;
+        if (right == -1) {
+            ++left;
+            ++right;
+        }
+    }
+    return count + left + right * 2;
+}
+}
+    
+    
+    //跟921类似
+
